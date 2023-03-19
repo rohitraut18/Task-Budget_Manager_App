@@ -1,0 +1,24 @@
+/* body {
+    background-color: white;
+    color: black !important;
+    -webkit-background-size: cover !important;
+    -moz-background-size: cover !important;
+    -o-background-size: cover !important;
+    background-size: cover !important;
+    color: black !important;
+  }
+  @media screen and (prefers-color-scheme: light) {
+    body {
+      background-color: white;
+      color: black;
+    }
+  }
+   */
+
+   h1{
+    text-align:center;
+   }
+
+   h3{
+    text-align:center;
+   }

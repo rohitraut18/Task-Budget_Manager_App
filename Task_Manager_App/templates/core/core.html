@@ -1,0 +1,113 @@
+<html>
+
+<head>
+    <title>Home</title>
+    {% include "bootstrap.html" %}
+    {% load static %}
+    <link rel="stylesheet" href="{%static 'css/pro1.css' %}" />
+</head>
+
+<body>
+    {% include "navbar.html" %}
+    <h1>Organizer</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="jumbotron">
+                    {% if not task_data %}
+                        <p style="text-align:center;">There are no current tasks to graph.</p>
+                        <div style="text-align: center;">
+                            <a href="/tasks/" class="btn btn-primary">Tasks</a>
+                        </div>
+                    {% else %}
+                        <h3>Tasks</h3>
+                        <div id="graph1" class="ct-pie-chart ct-perfect-fourth"></div>
+                        <div style="text-align: center;">
+                            <a href="/tasks/" class="btn btn-primary">Tasks</a>
+                        </div>
+                    {% endif %}
+                </div> 
+            </div>
+            <div class="col">
+                <div class="jumbotron">
+                    {% if not budget_data %}
+                        <p style="text-align:center;">There are no current budgets to graph.</p>
+                        <div style="text-align: center;">
+                            <a href="/budget/" class="btn btn-primary">Budget</a>
+                        </div>
+                    {% else %}
+                        <h3>Budget</h3>
+                        <div id="graph2" class="ct-bar-chart ct-perfect-fourth"></div>
+                        <div style="text-align: center;">
+                            <a href="/budget/" class="btn btn-primary">Budget</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <script>
+                {% if not task_data %}
+                ;
+                {% else %}
+                backend = [{% for row in task_data %}
+                "{{row.completed}}",
+                        {% endfor %}
+                ]
+                var trues = 0;
+                var falses = 0;
+                for(let i = 0; i < backend.length; i++){
+                    if(backend[i] == "True"){
+                        trues++;
+                    }
+                    if(backend[i] == "False"){
+                        falses++;
+                    }
+                }
+
+                graphArr = [trues, falses];
+
+                var data = {
+                    labels: ['Completed', 'Uncompleted'],
+                    series: graphArr
+                };
+
+                var options = {
+                    labelInterpolationFnc: function(value) {
+                      return value[0]
+                    }
+                };
+
+                var responsiveOptions = [
+                  ['screen', {
+                    chartPadding: 20,
+                    labelOffset:85,
+                    labelDirection: 'explode',
+                    labelInterpolationFnc: function(value) {
+                      return value;
+                    }
+                  }]
+                ];
+                
+                new Chartist.Pie('#graph1', data,options,responsiveOptions);
+                {% endif %}
+
+                
+                //Bar Graph
+                {% if not budget_data %}
+                    ;
+                {% else %}
+                projected = [{% for row in budget_data %}
+                            {{ row.projected }},
+                {% endfor %}
+                ];
+                actual = [{% for row in budget_data %}
+                            {{ row.actual }},
+                {% endfor %}
+                ];
+                new Chartist.Bar('#graph2', {series: [projected,actual]});
+                {% endif %}
+        </script>
+    <div>
+</body>
+</html>

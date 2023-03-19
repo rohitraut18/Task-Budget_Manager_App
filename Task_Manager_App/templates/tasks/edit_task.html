@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Edit Journal</title>
+  {% include "bootstrap.html" %}
+  {% load static %}
+  <link rel="stylesheet" href="{%static 'css/pro1.css' %}" />
+</head>
+<body>
+  {% include "navbar.html" %}
+  <div class="jumbotron">
+    <h1>Edit Task</h1>
+    <form method="POST">
+      {% csrf_token %}
+      <table>
+        {{ form_data.as_table }}
+				<tr>
+					<td></td>
+					<td>
+						<a href="/tasks/" class="btn btn-secondary">Cancel</a>
+						<input type="submit" class="btn btn-primary" name="edit" value = "Update Task">
+					</td>
+				</td></tr>
+			</table>
+    </form>
+  </div>
+</body>
+</html>
